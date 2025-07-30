@@ -1,8 +1,32 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:good_mood/core/local_data_source/cache_helper.dart';
+import 'package:good_mood/generated/l10n.dart';
+import 'package:intl/intl.dart';
 
-part 'local_state.dart';
+class LocaleCubit extends Cubit<String> {
+  LocaleCubit() : super('en');
 
-class LocalCubit extends Cubit<LocalState> {
-  LocalCubit() : super(LocalInitial());
+  static List<LocalizationsDelegate> localizationsDelegates = [
+    S.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
+
+  static bool isArabic() {
+    return Intl.getCurrentLocale() == 'ar';
+  }
+
+  void toggleLocale() async {
+    final newLocale = state == 'en' ? 'ar' : 'en';
+    await CacheHelper().saveData(key: 'locale', value: newLocale);
+    emit(newLocale);
+  }
+
+  void loadSavedLocale() async {
+    final savedLocale = await CacheHelper().getData(key: 'locale') ?? 'en';
+    emit(savedLocale);
+  }
 }
