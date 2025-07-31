@@ -9,7 +9,11 @@ class SplashScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Welcome to Good Mood',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
+          ),
         ),
       ),
     );
